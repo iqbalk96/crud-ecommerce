@@ -11,6 +11,7 @@ class UserLanding extends CI_Controller
 
 	public function index()
 	{
-		$this->load->view('userLanding/Index');
+		$data['products'] = $this->user_landing_models->read_all_product();
+		$this->load->view('userLanding/Index', $data);
 	}
 }
