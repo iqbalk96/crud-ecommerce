@@ -14,21 +14,21 @@ class Product_models extends CI_Model
         $this->db->insert('barang', $data);
     }
 
-    // function deleteSlider($id)
-    // {
-    //     $this->db->where('id', $id);
-    //     $this->db->delete('tb_slider_home');
-    // }
+    function read_product_detail($id)
+    {
+        $sql = $this->db->query("SELECT * FROM `barang` where id_barang = '$id' ");
+        return $sql->row();
+    }
 
-    // function loadSliderById($id)
-    // {
-    //     $sql = $this->db->query("SELECT * FROM `tb_slider_home` where id = '$id' ");
-    //     return $sql->row();
-    // }
+    function delete_product($id)
+    {
+        $this->db->where('id_barang', $id);
+        $this->db->delete('barang');
+    }
 
-    // function updateSlider($id, $data)
-    // {
-    //     $this->db->where('id', $id);
-    //     $this->db->update('tb_slider_home', $data);
-    // }
+    function update_product($id, $data)
+    {
+        $this->db->where('id_barang', $id);
+        $this->db->update('barang', $data);
+    }
 }

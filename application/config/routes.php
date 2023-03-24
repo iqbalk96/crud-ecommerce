@@ -51,7 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'auth';
 $route['dashboard'] = 'product';
+
+// products
 $route['product/create'] = 'product/create_product';
+$route['product/update/(:any)'] = 'product/update_product/$1';
+$route['product/delete/(:any)'] = 'product/delete_product/$1';
+
 $route['sale'] = 'sales';
 
 $route['404_override'] = '';

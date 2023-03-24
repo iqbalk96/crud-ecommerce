@@ -1,6 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Product extends CI_Controller {
+class Product extends CI_Controller
+{
 
     public function __construct()
     {
@@ -44,11 +45,56 @@ class Product extends CI_Controller {
                     'image' => $this->upload->data('file_name')
                 );
                 $this->product_models->create_product($data);
-                redirect('product');
+                redirect('/product');
             }
         } else {
             $this->load->view('product/FormProduct');
         }
+    }
+
+    function update_product($id)
+    {
+        if ($this->input->post()) {
+            $config['upload_path']          = './upload/products';
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+            $config['max_size']             = 10000;
+            $config['max_width']            = 10000;
+            $config['max_height']           = 10000;
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload('image')) {
+                $data = array(
+                    'nama' => $this->input->post('nama'),
+                    'harga_beli' => $this->input->post('harga_beli'),
+                    'harga_jual' => $this->input->post('harga_jual'),
+                    'satuan' => $this->input->post('satuan'),
+                    'kategori' => $this->input->post('kategori')
+                );
+                $this->product_models->update_product($id, $data);
+            } else {
+                $data = array(
+                    'nama' => $this->input->post('nama'),
+                    'harga_beli' => $this->input->post('harga_beli'),
+                    'harga_jual' => $this->input->post('harga_jual'),
+                    'satuan' => $this->input->post('satuan'),
+                    'kategori' => $this->input->post('kategori'),
+                    'image' => $this->upload->data('file_name')
+                );
+                $this->product_models->update_product($id, $data);
+            }
+            redirect('/product');
+        } else {
+            $data['product'] = $this->product_models->read_product_detail($id);
+            $this->load->view('product/FormProductEdit', $data);
+        }
+    }
+
+    function delete_product($id)
+    {
+        $data['product'] = $this->product_models->read_product_detail($id);
+        $path = './upload/products/' . $data['product']->image;
+        unlink($path);
+        $this->product_models->delete_product($id);
+		redirect('/product');
     }
 
 }
